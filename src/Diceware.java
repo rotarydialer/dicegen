@@ -15,13 +15,11 @@ public class Diceware {
     static Random rng = new Random();
 
     public static void main(String args[]) throws IOException {
-        System.out.println("START ___");
-
         readFromFile("wordlist.txt");
 
-        System.out.println(String.format("Phrase: \"%1$s\"", generatePassPhrase(7) ));
-
-        System.out.println("___   END");
+        System.out.println("Suggested passphrase:");
+        System.out.println();
+        System.out.println(generatePassPhrase(7));
     }
 
     private static String generatePassPhrase(int numWords) {
@@ -48,8 +46,6 @@ public class Diceware {
             concatResult = concatResult + result;
         }
 
-        System.out.println(">>> " + concatResult);
-
         return concatResult;
     }
 
@@ -63,8 +59,6 @@ public class Diceware {
 
             BufferedReader fileReader =	new BufferedReader(new InputStreamReader(res));
 
-            //FileReader fileReader = new FileReader(fileName);
-
             // Always wrap FileReader in BufferedReader.
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
@@ -74,8 +68,6 @@ public class Diceware {
                     if (line.trim() != "" && !line.trim().isEmpty()) {
 
                         codeWordTable.put(line.substring(0, 5), line.substring(6, line.length()));
-
-                        //System.out.println(String.format("  -> K: \"%1$s\" / V: \"%2$s\"", line.substring(0, 5), line.substring(6, line.length()) ));
 
                     } else {
                         // ignore empty lines
@@ -93,13 +85,11 @@ public class Diceware {
         }
         catch(FileNotFoundException ex) {
             System.out.println(
-                    "Unable to open file '" +
-                            fileName + "'");
+                    "Unable to open file '" + fileName + "'");
         }
         catch(IOException ex) {
             System.out.println(
-                    "Error reading file '"
-                            + fileName + "'");
+                    "Error reading file '" + fileName + "'");
         }
     }
 
