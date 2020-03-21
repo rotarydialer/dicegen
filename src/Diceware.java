@@ -15,11 +15,20 @@ public class Diceware {
     static Random rng = new Random();
 
     public static void main(String args[]) throws IOException {
+        int wordCount=6;
         readFromFile("wordlist.txt");
+
+        if (args.length > 0) {
+            try {
+                wordCount = Integer.parseInt(args[0]);
+            } catch(NumberFormatException e) {
+                System.err.println(String.format("You must provide an integer as the first argument (word count). Proceeding with the default of %d.", wordCount));
+            }
+        }
 
         System.out.println("Suggested passphrase:");
         System.out.println();
-        System.out.println(generatePassPhrase(7));
+        System.out.println(generatePassPhrase(wordCount));
     }
 
     private static String generatePassPhrase(int numWords) {
