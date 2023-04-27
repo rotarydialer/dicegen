@@ -1,13 +1,29 @@
 const yargs = require("yargs");
 
-const generatePhrase = (wordCount, wordlist, outFile) => {
-  console.log(`Generating a ${wordCount} word passphrase...`);
+const generate = (wordCount, wordlist, phraseCount, outFile) => {
+  // TODO: implement multiple phases; output to file
+  console.log(`Generating a passphrase with ${wordCount} words...`);
   console.log();
 
   let codeWordMap = new Map();
   codeWordMap = loadWordlist(wordlist);
 
-  console.log(codeWordMap);
+  let codesRandomized = [];
+
+  for (let i = 0; i < wordCount; i++) {
+    codesRandomized.push(concatDieRolls());
+  }
+
+  let phrase = [];
+
+  for (let j = 0; j < codesRandomized.length; j++) {
+    phrase.push(codeWordMap.get(codesRandomized[j]));
+  }
+
+  console.log(phrase.join(" "));
+
+  console.log();
+  console.log("Done.");
 };
 
 const loadWordlist = (filename) => {
@@ -27,6 +43,21 @@ const loadWordlist = (filename) => {
   return fileMap;
 };
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const concatDieRolls = (numSides = 6, numDigits = 5) => {
+  let rolls = [];
+  for (let i = 0; i < numDigits; i++) {
+    rolls.push(getRandomInt(1, numSides));
+  }
+
+  return rolls.join("");
+};
+
 const args = yargs
   .command(
     "*",
@@ -34,8 +65,14 @@ const args = yargs
     (yargs) => {}
   )
   .option("length", {
+    alias: "l",
     describe: "number of words to include in the phrase",
     default: 6,
+  })
+  .option("phrases", {
+    alias: "n",
+    describe: "number of phrases to generate",
+    default: 1,
   })
   .option("corpus", {
     alias: "c",
@@ -49,7 +86,8 @@ const args = yargs
   .help().argv;
 
 const wordCount = args.length;
+const phraseCount = args.phrases;
 const wordlist = args.corpus;
 const outFile = args.output;
 
-generatePhrase(wordCount, wordlist, outFile);
+generate(wordCount, wordlist, phraseCount, outFile);
