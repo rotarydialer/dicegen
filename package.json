@@ -11,5 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/rotarydialer/dicegen.git"
   },
-  "author": "Christopher Drew"
+  "author": "Christopher Drew",
+  "dependencies": {
+    "yargs": "^17.7.1"
+  }
 }
