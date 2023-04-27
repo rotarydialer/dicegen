@@ -1,0 +1,15 @@
+{
+  "name": "dicegen",
+  "version": "0.1.0",
+  "description": "A simple passphrase generator.",
+  "main": "dicegen.js",
+  "scripts": {
+    "start": "node dicegen",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rotarydialer/dicegen.git"
+  },
+  "author": "Christopher Drew"
+}
