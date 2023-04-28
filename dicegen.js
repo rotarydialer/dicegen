@@ -1,13 +1,42 @@
 const yargs = require("yargs");
 
 const generate = (wordCount, wordlist, phraseCount, outFile) => {
-  // TODO: implement multiple phases; output to file
-  console.log(`Generating a passphrase with ${wordCount} words...`);
+  // TODO: implement output to file
+  if (phraseCount === 1) {
+    console.log(`Generating a passphrase with ${wordCount} words...`);
+  } else {
+    console.log(
+      `Generating ${phraseCount} passphrases, each with ${wordCount} words...`
+    );
+  }
   console.log();
 
   let codeWordMap = new Map();
   codeWordMap = loadWordlist(wordlist);
 
+  const phrases = generateNPhrases(phraseCount, wordCount, codeWordMap);
+
+  phrases.forEach((phrase) => {
+    console.log(`     ${phrase}`);
+  });
+
+  console.log();
+  console.log("Done.");
+};
+
+const generateNPhrases = (phraseCount, wordCount, codeWordMap) => {
+  let phrases = [];
+
+  if (phraseCount === 1) return [generatePhrase(wordCount, codeWordMap)];
+
+  for (let c = 1; c <= phraseCount; c++) {
+    phrases.push(generatePhrase(wordCount, codeWordMap));
+  }
+
+  return phrases;
+};
+
+const generatePhrase = (wordCount, codeWordMap) => {
   let codesRandomized = [];
 
   for (let i = 0; i < wordCount; i++) {
@@ -20,10 +49,7 @@ const generate = (wordCount, wordlist, phraseCount, outFile) => {
     phrase.push(codeWordMap.get(codesRandomized[j]));
   }
 
-  console.log(phrase.join(" "));
-
-  console.log();
-  console.log("Done.");
+  return phrase.join(" ");
 };
 
 const loadWordlist = (filename) => {
@@ -70,7 +96,7 @@ const args = yargs
     default: 6,
   })
   .option("phrases", {
-    alias: "n",
+    alias: "p",
     describe: "number of phrases to generate",
     default: 1,
   })
